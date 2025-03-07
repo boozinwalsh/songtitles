@@ -1,0 +1,265 @@
+<style>
+  /* CSS Variables for scaling and sizing */
+  :root {
+    --font-scale: 1.5;
+    --font-artist: calc(1.7em * var(--font-scale));
+    --title-box-offset-x: 5px;
+    --title-box-offset-y: 5px;
+    --title-max-font-size: 54px;
+    --title-min-font-size: 12px;
+    --gap-artist: 0px;
+  }
+
+  /* Reset defaults */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background-color: transparent; /* For OBS compatibility */
+    overflow: hidden;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    position: relative;
+  }
+
+  /* Container for the song display */
+  #display-container {
+    background-color: #333;
+    border-radius: 20px;
+    color: white;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 6px solid rgb(7, 7, 7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    max-width: 90%;
+    min-width: 150px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    transition: width 0.3s ease, height 0.3s ease;
+  }
+
+  /* Pseudo-element for additional styling effects */
+  #display-container::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    width: 10px;
+    height: 10px;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  /* Content alignment within the display */
+  #display-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gap-artist);
+  }
+
+  /* Wrapper for the song title */
+  #title-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    left: var(--title-box-offset-x);
+    top: var(--title-box-offset-y);
+    overflow: hidden;
+    padding: 0 20px;
+  }
+
+  /* Text styling with shadows for better readability */
+  #display-content * {
+    position: relative;
+    z-index: 1;
+    text-shadow: 
+      1px 1px 2px rgba(0, 0, 0, 1),
+      2px 2px 4px rgba(0, 0, 0, 1),
+      1px 1px 2px rgba(0, 0, 0, 1),
+      2px 2px 4px rgba(0, 0, 0, 1),
+      1px 1px 2px rgba(0, 0, 0, 1),
+      2px 2px 4px rgba(0, 0, 0, 1);
+  }
+
+  /* Song title styling */
+  h1 {
+    font-size: clamp(var(--title-min-font-size), 2vw + 1em, var(--title-max-font-size));
+    line-height: 1.2;
+    word-wrap: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: var(--gap-artist);
+    padding-right: 10px;
+    padding-bottom: 3px;
+  }
+
+  /* Artist name styling */
+  h2 {
+    font-size: var(--font-artist);
+    margin: 5px 0;
+    line-height: 1.2;
+    word-wrap: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: var(--gap-artist);
+    padding-right: 5px;
+    padding-bottom: 3px;
+  }
+
+  /* Animated background with emote imagery */
+  #display-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('orca_emote.png'); /* Update this URL to your hosted image if needed */
+    background-repeat: repeat;
+    background-size: 73px 73px;
+    background-position: 0 0;
+    animation: moveBackground 5s linear infinite;
+    z-index: 0;
+  }
+
+  /* Keyframes for the background animation */
+  @keyframes moveBackground {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: -73px -73px;
+    }
+  }
+
+  /* Responsive adjustments for smaller viewports */
+  @media (max-width: 600px) {
+    #display-container {
+      width: fit-content;
+      padding: 15px 20px;
+      min-width: 150px;
+    }
+    h2 {
+      font-size: calc(1.2em * var(--font-scale));
+      margin-top: var(--gap-artist);
+    }
+  }
+</style>
+
+<div id="display-container">
+  <div id="display-content">
+    <div id="title-wrapper">
+      <h1 id="song-title">Song Title</h1>
+    </div>
+    <h2 id="artist-name">Artist Name</h2>
+  </div>
+</div>
+
+<script>
+  // API endpoint for retrieving song data
+  const API_URL = "https://api.streamersonglist.com/v1/streamers/michelleheafy/queue";
+
+  /**
+   * Adjusts the font size of the song title so that it fits within its container.
+   */
+  function adjustSongTitleFont() {
+    const titleEl = document.getElementById('song-title');
+    const wrapper = document.getElementById('title-wrapper');
+
+    // Retrieve max and min font sizes from CSS variables
+    let maxFontSize = parseInt(getComputedStyle(document.documentElement)
+                              .getPropertyValue('--title-max-font-size'));
+    let minFontSize = parseInt(getComputedStyle(document.documentElement)
+                              .getPropertyValue('--title-min-font-size'));
+
+    // Start at maximum size
+    titleEl.style.fontSize = `${maxFontSize}px`;
+    let currentFontSize = maxFontSize;
+
+    // Reduce the font size until the text fits inside the wrapper or reaches the minimum size
+    while ((titleEl.scrollWidth > wrapper.clientWidth ||
+            titleEl.scrollHeight > wrapper.clientHeight) &&
+           currentFontSize > minFontSize) {
+      currentFontSize--;
+      titleEl.style.fontSize = `${currentFontSize}px`;
+    }
+
+    // If the font size is below the minimum, force it and handle overflow
+    if (currentFontSize < minFontSize) {
+      titleEl.style.fontSize = `${minFontSize}px`;
+      titleEl.style.textOverflow = 'ellipsis';
+    }
+  }
+
+  /**
+   * Fetches the current song data from the API and updates the display.
+   */
+  async function fetchSongData() {
+    try {
+      const response = await fetch(API_URL);
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      const data = await response.json();
+
+      // Check if there's at least one song in the queue
+      if (data && data.list && data.list.length > 0) {
+        const song = data.list[0].song;
+        document.getElementById('song-title').textContent = song.title;
+        document.getElementById('artist-name').textContent = song.artist;
+
+        adjustSongTitleFont();
+        // Ensure the display is active
+        const container = document.getElementById('display-container');
+        container.style.opacity = '1';
+        container.style.pointerEvents = 'auto';
+      } else {
+        // When no song is playing
+        updateDisplay("No song playing", "");
+      }
+    } catch (error) {
+      console.error("Error fetching song data:", error);
+      updateDisplay("Error fetching song data", "");
+    }
+  }
+
+  /**
+   * Updates the display with a default message and toggles visibility.
+   */
+  function updateDisplay(title, artist) {
+    const container = document.getElementById('display-container');
+    if (title === "No song playing") {
+      container.style.opacity = '0';
+      container.style.pointerEvents = 'none';
+    } else {
+      container.style.opacity = '1';
+      container.style.pointerEvents = 'auto';
+    }
+    document.getElementById('song-title').textContent = title;
+    document.getElementById('artist-name').textContent = artist;
+    adjustSongTitleFont();
+  }
+
+  // Initialize when the DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    fetchSongData();                // Initial fetch
+    setInterval(fetchSongData, 4000); // Refresh data every 4 seconds
+  });
+</script>
