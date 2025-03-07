@@ -1,0 +1,162 @@
+/* CSS Variables for scaling and sizing */
+:root {
+  --font-scale: 1.5;
+  --font-artist: calc(1.7em * var(--font-scale));
+  --title-box-offset-x: 5px;
+  --title-box-offset-y: 5px;
+  --title-max-font-size: 54px;
+  --title-min-font-size: 12px;
+  --gap-artist: 0px;
+}
+
+/* Reset defaults */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: transparent; /* For OBS compatibility */
+  overflow: hidden;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  position: relative;
+}
+
+/* Container for the song display */
+#display-container {
+  background-color: #333;
+  border-radius: 20px;
+  color: white;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 6px solid rgb(7, 7, 7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  max-width: 90%;
+  min-width: 150px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+/* Pseudo-element for additional styling effects */
+#display-container::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  width: 10px;
+  height: 10px;
+  background: transparent;
+  pointer-events: none;
+}
+
+/* Content alignment within the display */
+#display-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-artist);
+}
+
+/* Wrapper for the song title */
+#title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  left: var(--title-box-offset-x);
+  top: var(--title-box-offset-y);
+  overflow: hidden;
+  padding: 0 20px;
+}
+
+/* Text styling with shadows for better readability */
+#display-content * {
+  position: relative;
+  z-index: 1;
+  text-shadow: 
+    1px 1px 2px rgba(0, 0, 0, 1),
+    2px 2px 4px rgba(0, 0, 0, 1),
+    1px 1px 2px rgba(0, 0, 0, 1),
+    2px 2px 4px rgba(0, 0, 0, 1),
+    1px 1px 2px rgba(0, 0, 0, 1),
+    2px 2px 4px rgba(0, 0, 0, 1);
+}
+
+/* Song title styling */
+h1 {
+  font-size: clamp(var(--title-min-font-size), 2vw + 1em, var(--title-max-font-size));
+  line-height: 1.2;
+  word-wrap: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: var(--gap-artist);
+  padding-right: 10px;
+  padding-bottom: 3px;
+}
+
+/* Artist name styling */
+h2 {
+  font-size: var(--font-artist);
+  margin: 5px 0;
+  line-height: 1.2;
+  word-wrap: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: var(--gap-artist);
+  padding-right: 5px;
+  padding-bottom: 3px;
+}
+
+/* Animated background with emote imagery */
+#display-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('orca_emote.png');
+  background-repeat: repeat;
+  background-size: 73px 73px;
+  background-position: 0 0;
+  animation: moveBackground 5s linear infinite;
+  z-index: 0;
+}
+
+/* Keyframes for the background animation */
+@keyframes moveBackground {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -73px -73px;
+  }
+}
+
+/* Responsive adjustments for smaller viewports */
+@media (max-width: 600px) {
+  #display-container {
+    width: fit-content;
+    padding: 15px 20px;
+    min-width: 150px;
+  }
+  h2 {
+    font-size: calc(1.2em * var(--font-scale));
+    margin-top: var(--gap-artist);
+  }
+}
