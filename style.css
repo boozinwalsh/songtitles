@@ -29,7 +29,7 @@
 html, body {
   width: 100%;
   height: 100%;
-  background-color: transparent;
+  background-color: #1a1a1a; /* Dark background to match the screenshot */
   overflow: hidden;
   font-family: 'PT Sans', sans-serif;
 }
@@ -41,7 +41,7 @@ html, body {
   color: white;
   padding: 12px 20px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
-  border: 3px solid rgb(10, 10, 10);
+  border: 2px solid rgb(10, 10, 10);
   
   display: flex;
   flex-direction: column;
@@ -51,25 +51,18 @@ html, body {
   max-width: 90%;
   min-width: 150px;
   
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: relative;
+  margin: 20px auto;
   overflow: hidden;
   
-  /* Smooth transitions */
-  transition: width 0.3s ease, height 0.3s ease;
-}
-
-/* Extra space for shadows */
-#current-song-display::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  right: -5px;
-  width: 10px;
-  height: 10px;
-  background: transparent;
-  pointer-events: none;
+  /* Textured pattern background, similar to the bottom box */
+  background-image: 
+    linear-gradient(45deg, #1a1a1a 25%, transparent 25%), 
+    linear-gradient(-45deg, #1a1a1a 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #1a1a1a 75%),
+    linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
 }
 
 /* Inner content wrapper */
@@ -83,26 +76,20 @@ html, body {
   width: 100%;
 }
 
-/* Title container */
-#track-title-wrapper {
+/* Title row for title and emoji */
+.title-row {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  left: var(--title-x-offset);
-  top: var(--title-y-offset);
-  overflow: hidden;
-  padding: 0 5px;
   width: 100%;
 }
 
-/* Text shadow for all text elements */
-#song-wrapper * {
-  position: relative;
-  z-index: 1;
-  text-shadow: 
-    1px 1px 2px rgba(0, 0, 0, 0.9),
-    2px 2px 3px rgba(0, 0, 0, 0.8);
+/* Blue icon/emoji styling */
+.blue-icon {
+  display: inline-block;
+  color: #00bfff; /* Bright blue color */
+  font-size: 24px;
+  margin-left: 8px;
 }
 
 /* Song title styling */
@@ -111,68 +98,19 @@ h1 {
   line-height: 1.1;
   word-wrap: break-word;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  
-  margin-bottom: 4px;
-  padding-right: 0;
-  padding-bottom: 0;
   font-weight: 700;
   letter-spacing: -0.2px;
-  width: 100%;
 }
 
 /* Artist name styling */
 h2 {
   font-size: var(--artist-font-size);
-  margin: 0;
   line-height: 1.1;
-  word-wrap: break-word;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  
-  margin-top: 0;
-  padding-right: 0;
-  padding-bottom: 0;
   font-weight: 400;
   opacity: 0.95;
-  width: 100%;
 }
 
-/* Animated background */
-#current-song-display::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  
-  /* You'll need to add your own band's image here */
-  background-image: url('band_image.png');
-  background-repeat: repeat;
-  background-size: 73px 73px;
-  background-position: 0px 0px;
-  
-  /* Animation for diagonal scrolling */
-  animation: scrollPattern 5s linear infinite;
-  
-  z-index: 0;
-  opacity: 0.12; /* Making the background more subtle */
-}
-
-/* Background animation keyframes */
-@keyframes scrollPattern {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: -73px -73px;
-  }
-}
-
-/* Ensure dynamic resizing still works */
+/* Media queries for responsiveness */
 @media (max-width: 600px) {
   #current-song-display {
     width: fit-content;
