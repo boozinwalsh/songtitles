@@ -1,17 +1,21 @@
+/* Import PT Sans font */
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap');
+
 /* Custom properties for styling and sizing */
 :root {
   /* Font sizing variables */
   --scale-factor: 1.5;
-  --artist-font-size: calc(1.4em * var(--scale-factor));
+  --title-font-size: 32px;
+  --artist-font-size: 24px;
   
   /* Title container positioning and size limits */
-  --title-x-offset: 5px;
-  --title-y-offset: 5px;
-  --title-max-size: 48px;
-  --title-min-size: 12px;
+  --title-x-offset: 0px;
+  --title-y-offset: 0px;
+  --title-max-size: 36px;
+  --title-min-size: 14px;
   
   /* Spacing between elements */
-  --artist-spacing: 0px;
+  --artist-spacing: 2px;
 }
 
 /* Reset browser defaults */
@@ -27,7 +31,7 @@ html, body {
   height: 100%;
   background-color: transparent;
   overflow: hidden;
-  font-family: Arial, sans-serif;
+  font-family: 'PT Sans', sans-serif;
 }
 
 /* Song display container */
@@ -35,7 +39,7 @@ html, body {
   background-color: #222222;
   border-radius: 12px;
   color: white;
-  padding: 8px 12px;
+  padding: 12px 20px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
   border: 3px solid rgb(10, 10, 10);
   
@@ -76,6 +80,7 @@ html, body {
   align-items: center;
   gap: var(--artist-spacing);
   padding: 0 5px;
+  width: 100%;
 }
 
 /* Title container */
@@ -88,6 +93,7 @@ html, body {
   top: var(--title-y-offset);
   overflow: hidden;
   padding: 0 5px;
+  width: 100%;
 }
 
 /* Text shadow for all text elements */
@@ -101,35 +107,37 @@ html, body {
 
 /* Song title styling */
 h1 {
-  font-size: clamp(var(--title-min-size), 2vw + 1em, var(--title-max-size));
-  line-height: 1;
+  font-size: var(--title-font-size);
+  line-height: 1.1;
   word-wrap: break-word;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   
-  margin-bottom: 0;
-  padding-right: 5px;
+  margin-bottom: 4px;
+  padding-right: 0;
   padding-bottom: 0;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.2px;
+  width: 100%;
 }
 
 /* Artist name styling */
 h2 {
   font-size: var(--artist-font-size);
-  margin: 1px 0;
-  line-height: 1;
+  margin: 0;
+  line-height: 1.1;
   word-wrap: break-word;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   
   margin-top: 0;
-  padding-right: 5px;
+  padding-right: 0;
   padding-bottom: 0;
-  font-weight: 500;
-  opacity: 0.9;
+  font-weight: 400;
+  opacity: 0.95;
+  width: 100%;
 }
 
 /* Animated background */
@@ -164,16 +172,19 @@ h2 {
   }
 }
 
-/* Mobile responsive adjustments */
+/* Ensure dynamic resizing still works */
 @media (max-width: 600px) {
   #current-song-display {
     width: fit-content;
-    padding: 8px 10px;
+    padding: 10px 16px;
     min-width: 150px;
   }
 
+  h1 {
+    font-size: 28px;
+  }
+
   h2 {
-    font-size: calc(1.2em * var(--scale-factor));
-    margin-top: 0;
+    font-size: 20px;
   }
 }
