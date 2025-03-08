@@ -1,0 +1,177 @@
+/* Custom properties for styling and sizing */
+:root {
+  /* Font sizing variables */
+  --scale-factor: 1.5;
+  --artist-font-size: calc(1.7em * var(--scale-factor));
+  
+  /* Title container positioning and size limits */
+  --title-x-offset: 5px;
+  --title-y-offset: 5px;
+  --title-max-size: 54px;
+  --title-min-size: 12px;
+  
+  /* Spacing between elements */
+  --artist-spacing: 0px;
+}
+
+/* Reset browser defaults */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Base page setup */
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+/* Song display container */
+#current-song-display {
+  background-color: #333;
+  border-radius: 20px;
+  color: white;
+  padding: 10px 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 6px solid rgb(7, 7, 7);
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  width: fit-content;
+  max-width: 90%;
+  min-width: 150px;
+  
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  
+  /* Smooth transitions */
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+/* Extra space for shadows */
+#current-song-display::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  width: 10px;
+  height: 10px;
+  background: transparent;
+  pointer-events: none;
+}
+
+/* Inner content wrapper */
+#song-wrapper {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--artist-spacing);
+}
+
+/* Title container */
+#track-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  left: var(--title-x-offset);
+  top: var(--title-y-offset);
+  overflow: hidden;
+  padding: 0 20px;
+}
+
+/* Text shadow for all text elements */
+#song-wrapper * {
+  position: relative;
+  z-index: 1;
+  text-shadow: 
+    1px 1px 2px rgba(0, 0, 0, 1.0),
+    2px 2px 4px rgba(0, 0, 0, 1.0),
+    1px 1px 2px rgba(0, 0, 0, 1.0),
+    2px 2px 4px rgba(0, 0, 0, 1.0),
+    1px 1px 2px rgba(0, 0, 0, 1.0),
+    2px 2px 4px rgba(0, 0, 0, 1.0);
+}
+
+/* Song title styling */
+h1 {
+  font-size: clamp(var(--title-min-size), 2vw + 1em, var(--title-max-size));
+  line-height: 1.2;
+  word-wrap: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  margin-bottom: var(--artist-spacing);
+  padding-right: 10px;
+  padding-bottom: 3px;
+}
+
+/* Artist name styling */
+h2 {
+  font-size: var(--artist-font-size);
+  margin: 5px 0;
+  line-height: 1.2;
+  word-wrap: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  margin-top: var(--artist-spacing);
+  padding-right: 5px;
+  padding-bottom: 3px;
+}
+
+/* Animated background */
+#current-song-display::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  /* You'll need to add your own band's image here */
+  background-image: url('band_image.png');
+  background-repeat: repeat;
+  background-size: 73px 73px;
+  background-position: 0px 0px;
+  
+  /* Animation for diagonal scrolling */
+  animation: scrollPattern 5s linear infinite;
+  
+  z-index: 0;
+}
+
+/* Background animation keyframes */
+@keyframes scrollPattern {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -73px -73px;
+  }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 600px) {
+  #current-song-display {
+    width: fit-content;
+    padding: 15px 20px;
+    min-width: 150px;
+  }
+
+  h2 {
+    font-size: calc(1.2em * var(--scale-factor));
+    margin-top: var(--artist-spacing);
+  }
+}
