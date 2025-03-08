@@ -45,21 +45,22 @@ async function fetchSongData() {
     }
     const data = await response.json();
 
-    // Check if there's at least one song in the queue
-    if (data && data.list && data.list.length > 0) {
-      const nowPlaying = data.list.find(song => song.position === 1);
-      document.getElementById('song-title').textContent = song.title;
-      document.getElementById('artist-name').textContent = song.artist;
+// Check if there's at least one song in the queue
+if (data && data.list && data.list.length > 0) {
+  const song = data.list[0].song; 
+  const title = song.title || "Unknown Title"; 
+  const artist = song.artist || "Unknown Artist";
 
-      adjustSongTitleFont();
-      // Ensure the display is active
-      const container = document.getElementById('display-container');
-      container.style.opacity = '1';
-      container.style.pointerEvents = 'auto';
-    } else {
-      // When no song is playing
-      updateDisplay("No song playing", "");
-    }
+  document.getElementById('song-title').textContent = title;
+  document.getElementById('artist-name').textContent = artist;
+
+  adjustSongTitleFont();
+  const container = document.getElementById('display-container');
+  container.style.opacity = '1';
+  container.style.pointerEvents = 'auto';
+} else {
+  updateDisplay("No song playing", "");
+}
   } catch (error) {
     console.error("Error fetching song data:", error);
     updateDisplay("Error fetching song data", "");
