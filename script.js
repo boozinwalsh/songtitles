@@ -88,3 +88,35 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchSongData();              // Initial fetch
   setInterval(fetchSongData, 4000); // Refresh data every 4 seconds
 });
+
+// Your existing code (functions, event listeners, etc.)
+
+
+// New code to fetch and display song data at the bottom
+async function fetchSongData() {
+    try {
+        const response = await fetch('YOUR_API_URL'); // Replace with your actual API URL
+        const data = await response.json(); // Parse the JSON response
+
+        if (data && data.list && data.list.length > 0) {
+            const firstSong = data.list[0].song; // Access the first song object
+            const songTitle = firstSong.title; // Get the title of the song
+            const songArtist = firstSong.artist; // Get the artist of the song
+
+            // Display the song title and artist on the page
+            document.getElementById('song-title').textContent = `"${songTitle}"`;
+            document.getElementById('artist-name').textContent = `by "${songArtist}"`;
+        } else {
+            throw new Error('No song data found');
+        }
+    } catch (error) {
+        // In case of error, display the error message
+        document.getElementById('song-title').textContent = 'Error fetching song data';
+        document.getElementById('artist-name').textContent = '';
+        console.error(error); // Log the error for debugging
+    }
+}
+
+// Call the function to fetch and display song data as soon as the script is loaded
+fetchSongData();
+
