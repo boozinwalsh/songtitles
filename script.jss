@@ -46,7 +46,7 @@ async function fetchSongData() {
 
     // Check if there's at least one song in the queue
     if (data && data.list && data.list.length > 0) {
-      const song = data.list[0].song;
+      const nowPlaying = data.list.find(song => song.position === 1);
       document.getElementById('song-title').textContent = song.title;
       document.getElementById('artist-name').textContent = song.artist;
 
