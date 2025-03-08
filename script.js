@@ -1,5 +1,5 @@
 // API endpoint for retrieving song data
-const API_URL = "https://api.streamersonglist.com/v1/streamers/michelleheafy/queue?status=nowplaying";
+const API_URL = "https://api.streamersonglist.com/v1/streamers/michelleheafy/queue";
 
 
 /**
