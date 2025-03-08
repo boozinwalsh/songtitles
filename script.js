@@ -1,5 +1,6 @@
 // API endpoint for retrieving song data
-const API_URL = "https://workers-playground-gentle-heart-f97b.boozinwalsh.workers.dev//?url=https://api.streamersonglist.com/v1/streamers/michelleheafy/queue";
+const API_URL = "https://api.streamersonglist.com/v1/streamers/michelleheafy/queue?status=nowplaying";
+
 
 /**
  * Adjusts the font size of the song title so that it fits within its container.
