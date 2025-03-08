@@ -1,7 +1,6 @@
 // API endpoint for retrieving song data
 const API_URL = "https://api.streamersonglist.com/v1/streamers/michelleheafy/queue";
 
-
 /**
  * Adjusts the font size of the song title so that it fits within its container.
  */
@@ -45,22 +44,22 @@ async function fetchSongData() {
     }
     const data = await response.json();
 
-// Check if there's at least one song in the queue
-if (data && data.list && data.list.length > 0) {
-  const song = data.list[0].song; 
-  const title = song.title || "Unknown Title"; 
-  const artist = song.artist || "Unknown Artist";
+    // Check if there's at least one song in the queue
+    if (data && data.list && data.list.length > 0) {
+      const song = data.list[0].song;
+      const title = song.title || "Unknown Title";
+      const artist = song.artist || "Unknown Artist";
 
-  document.getElementById('song-title').textContent = title;
-  document.getElementById('artist-name').textContent = artist;
+      document.getElementById('song-title').textContent = title;
+      document.getElementById('artist-name').textContent = artist;
 
-  adjustSongTitleFont();
-  const container = document.getElementById('display-container');
-  container.style.opacity = '1';
-  container.style.pointerEvents = 'auto';
-} else {
-  updateDisplay("No song playing", "");
-}
+      adjustSongTitleFont();
+      const container = document.getElementById('display-container');
+      container.style.opacity = '1';
+      container.style.pointerEvents = 'auto';
+    } else {
+      updateDisplay("No song playing", "");
+    }
   } catch (error) {
     console.error("Error fetching song data:", error);
     updateDisplay("Error fetching song data", "");
@@ -89,50 +88,3 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchSongData();              // Initial fetch
   setInterval(fetchSongData, 4000); // Refresh data every 4 seconds
 });
-
-// New code to fetch and display song data
-async function fetchSongData() {
-    try {
-        const response = await fetch('YOUR_API_URL'); // Replace with your actual API URL
-        const data = await response.json(); // Parse the JSON response
-
-        if (data && data.list && data.list.length > 0) {
-            const firstSong = data.list[0].song; // Access the first song object
-            const songTitle = firstSong.title; // Get the title of the song
-            const songArtist = firstSong.artist; // Get the artist of the song
-
-            // Display the song title and artist on the page
-            document.getElementById('song-title').textContent = `"${songTitle}"`;
-            document.getElementById('artist-name').textContent = `by "${songArtist}"`;
-        } else {
-            throw new Error('No song data found');
-        }
-    } catch (error) {
-        // In case of error, display the error message
-        document.getElementById('song-title').textContent = 'Error fetching song data';
-        document.getElementById('artist-name').textContent = '';
-        console.error(error); // Log the error for debugging
-    }
-}
-
-fetch("https://api.streamersonglist.com/v1/streamers/michelleheafy/queue")
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    return response.json();
-  })
-  .then((data) => {
-    console.log("API response data:", data);  // Log the response to check its structure
-    const songTitle = data[0].song; // Adjust this line based on the response structure
-    const artistName = data[0].artist; // Adjust as needed
-    document.getElementById("song-title").innerText = songTitle;
-    document.getElementById("artist-name").innerText = artistName;
-  })
-  .catch((error) => {
-    console.error("Error fetching song data:", error);
-    document.getElementById("song-title").innerText = "Error fetching song data";
-    document.getElementById("artist-name").innerText = "";
-  });
-// Call the function to fetch and display song data as soon as the script is loaded
-fetchSongData();
