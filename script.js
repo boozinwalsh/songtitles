@@ -115,5 +115,24 @@ async function fetchSongData() {
     }
 }
 
+fetch("https://api.streamersonglist.com/v1/streamers/michelleheafy/queue")
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  })
+  .then((data) => {
+    console.log("API response data:", data);  // Log the response to check its structure
+    const songTitle = data[0].song; // Adjust this line based on the response structure
+    const artistName = data[0].artist; // Adjust as needed
+    document.getElementById("song-title").innerText = songTitle;
+    document.getElementById("artist-name").innerText = artistName;
+  })
+  .catch((error) => {
+    console.error("Error fetching song data:", error);
+    document.getElementById("song-title").innerText = "Error fetching song data";
+    document.getElementById("artist-name").innerText = "";
+  });
 // Call the function to fetch and display song data as soon as the script is loaded
 fetchSongData();
