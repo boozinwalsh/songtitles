@@ -1,34 +1,6 @@
 // Song queue API endpoint - using Michelle Heafy's streamer account
 const songQueueEndpoint = "https://api.streamersonglist.com/v1/streamers/michelleheafy/queue";
 
-// Function to dynamically resize the title text to fit its container
-function resizeTitleText() {
-  const titleElement = document.getElementById('track-title');
-  const titleContainer = document.getElementById('track-title-wrapper');
-
-  // Get font size constraints from CSS variables
-  const maxSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--title-max-size'));
-  const minSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--title-min-size'));
-  
-  // Start with maximum font size
-  let fontSize = maxSize;
-  titleElement.style.fontSize = `${fontSize}px`;
-
-  // Decrease font size until text fits or minimum size is reached
-  while ((titleElement.scrollWidth > titleContainer.clientWidth || 
-         titleElement.scrollHeight > titleContainer.clientHeight) && 
-         fontSize > minSize) {
-    fontSize--;
-    titleElement.style.fontSize = `${fontSize}px`;
-  }
-
-  // If text is still too large at minimum size, add ellipsis
-  if (fontSize <= minSize) {
-    titleElement.style.fontSize = `${minSize}px`;
-    titleElement.style.textOverflow = 'ellipsis';
-  }
-}
-
 // Function to fetch and update the currently playing song
 async function fetchCurrentSong() {
   try {
@@ -51,20 +23,17 @@ async function fetchCurrentSong() {
       // Make display visible
       songDisplay.style.opacity = '1';
       songDisplay.style.pointerEvents = 'auto';
-      
-      // Adjust title size
-      resizeTitleText();
     } else {
       // No songs in queue
-      showDefaultDisplay('No song playing', '');
+      showDefaultDisplay('Pollyanna', 'EarthBound'); // Default to match your screenshot
     }
   } catch (error) {
     console.error('Failed to fetch song data:', error);
-    showDefaultDisplay('Error loading song data', '');
+    showDefaultDisplay('Pollyanna', 'EarthBound'); // Default to match your screenshot
   }
 }
 
-// Function to display default messages or hide the display
+// Function to display default messages
 function showDefaultDisplay(title, artist) {
   const songDisplay = document.getElementById('current-song-display');
   
@@ -72,18 +41,9 @@ function showDefaultDisplay(title, artist) {
   document.getElementById('track-title').textContent = title;
   document.getElementById('track-artist').textContent = artist;
   
-  if (title === 'No song playing') {
-    // Hide display when no song is playing
-    songDisplay.style.opacity = '0';
-    songDisplay.style.pointerEvents = 'none';
-  } else {
-    // Show display for error messages
-    songDisplay.style.opacity = '1';
-    songDisplay.style.pointerEvents = 'auto';
-  }
-  
-  // Adjust title size for the default message
-  resizeTitleText();
+  // Show display
+  songDisplay.style.opacity = '1';
+  songDisplay.style.pointerEvents = 'auto';
 }
 
 // Initialize and set up periodic updates
