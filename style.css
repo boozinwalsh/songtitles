@@ -16,11 +16,6 @@
   
   /* Spacing between elements */
   --artist-spacing: 2px;
-  
-  /* EarthBound colors */
-  --eb-black: #000000;
-  --eb-mint: #81D68E; /* Light mint green */
-  --eb-blue: #68A9D9; /* Light blue */
 }
 
 /* Reset browser defaults */
@@ -34,21 +29,19 @@
 html, body {
   width: 100%;
   height: 100%;
-  background-color: var(--eb-black);
+  background-color: #00000000; /* Dark background to match the screenshot */
   overflow: hidden;
   font-family: 'PT Sans', sans-serif;
 }
 
 /* Song display container */
 #current-song-display {
-  background-color: var(--eb-black);
-  border-radius: 10px;
+  background-color: #222222;
+  border-radius: 12px;
   color: white;
   padding: 12px 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  
-  /* EarthBound-style white border */
-  border: 4px solid white;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgb(10, 10, 10);
   
   display: flex;
   flex-direction: column;
@@ -61,39 +54,15 @@ html, body {
   position: relative;
   margin: 20px auto;
   overflow: hidden;
-  z-index: 1;
-}
-
-/* Creating the EarthBound checkered background */
-#current-song-display::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: 
-    linear-gradient(45deg, var(--eb-mint) 25%, transparent 25%), 
-    linear-gradient(-45deg, var(--eb-mint) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, var(--eb-mint) 75%),
-    linear-gradient(-45deg, transparent 75%, var(--eb-mint) 75%);
-  background-size: 20px 20px;
-  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-  z-index: -1;
-  opacity: 0.15;
   
-  /* Animation for the background */
-  animation: moveCheckerboard 10s linear infinite;
-}
-
-/* Animation for the moving background */
-@keyframes moveCheckerboard {
-  0% {
-    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-  }
-  100% {
-    background-position: 20px 20px, 20px 30px, 30px 10px, 10px 20px;
-  }
+  /* Textured pattern background, similar to the bottom box */
+  background-image: 
+    linear-gradient(45deg, #1a1a1a 25%, transparent 25%), 
+    linear-gradient(-45deg, #1a1a1a 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #1a1a1a 75%),
+    linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
 }
 
 /* Inner content wrapper */
@@ -105,7 +74,6 @@ html, body {
   gap: var(--artist-spacing);
   padding: 0 5px;
   width: 100%;
-  z-index: 2;
 }
 
 /* Title row for title and emoji */
@@ -119,7 +87,7 @@ html, body {
 /* Blue icon/emoji styling */
 .blue-icon {
   display: inline-block;
-  color: var(--eb-blue); /* EarthBound blue */
+  color: #00bfff; /* Bright blue color */
   font-size: 24px;
   margin-left: 8px;
 }
